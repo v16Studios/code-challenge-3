@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  laravel-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+    container_name: code-challenge-3
+    environment:
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_KEY: base64:PLACE_APP_KEY_HERE
+      LOG_CHANNEL: stack
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /var/www/html/database/database.sqlite
+    depends_on:
+      - database
+
+  database:
+    image: mariadb:10.8
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+
+  artisan:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /var/www/html
+    entrypoint: ["/bin/sh", "-c", "while true; do sleep 30; done;"]
+    volumes:
+      - .:/var/www/html
