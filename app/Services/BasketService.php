@@ -78,12 +78,12 @@ class BasketService
         return $basket->refresh();
     }
 
-    public function addLineItem(Basket $basket, Model $lineItem): void
+    public function addLineItem(Basket $basket, LineItem $lineItem): void
     {
         $basket->lineItems()->save($lineItem);
     }
 
-    public function removeLineItem(Model $lineItem): void
+    public function removeLineItem(LineItem $lineItem): void
     {
         $lineItem->delete();
     }
